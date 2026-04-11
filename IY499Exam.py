@@ -4,7 +4,7 @@ Date: 2026
 
 '''
 
-import pandas as pandas
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import statistics
@@ -30,17 +30,17 @@ def get_user_data():
             # Error Recovery: Handles non-numeric inputs
             print("Invalid input! Please enter a numerical value (e.g., 75.5).")
 
-if grade_list:
+    if grade_list:
         # Saving data to a CSV file
-    df = pd.DataFrame(grade_list, columns=["Grades"])
-    df.to_csv("student_grades.csv", index=False)
-    print(f"Success: {len(grade_list)} records saved to 'student_grades.csv'.")
-else:
-    print("No data was entered. File not updated.")
+        df = pd.DataFrame(grade_list, columns=["Grades"])
+        df.to_csv("student_grades.csv", index=False)
+        print(f"Success: {len(grade_list)} records saved to 'student_grades.csv'.")
+    else:
+        print("No data was entered. File not updated.")
         
 #Read numerical data from csv file using Pandas
 def read_data():
-   try:
+    try:
         # File Access: Reading from the CSV
         df = pd.read_csv("student_grades.csv")
         raw_grades = df["Grades"].tolist()
@@ -52,7 +52,15 @@ def read_data():
         # User specifies class width for binning (Grouping)
         width_input = input("Enter the class width for grouping data (e.g., 10): ")
         class_width = float(width_input)
-# Creating Bins using NumPy
+       
+        if class_width < 4:
+            print("Width too small! Setting to minimum (4).")
+            class_width = 4
+        elif class_width > 100:
+            print("Width too large! Setting to maximum (100).")
+            class_width = 100
+      
+        # Creating Bins using NumPy
         bins = np.arange(0, 100 + class_width, class_width)
         
         # Binning the data into categories
@@ -65,46 +73,46 @@ def read_data():
         # Calculating Midpoints for each class
         freq_table['Midpoint'] = freq_table['Class Range'].apply(lambda x: x.mid)
         
-        return raw_grades, freq_table
-   except FileNotFoundError:
+        return raw_grades, freq_table, class_width
+    except FileNotFoundError:
         # Error Recovery: Handles missing files without using 'os'
         print("\nError: 'student_grades.csv' not found. Please add data first (Option 1).")
-        return None, None
-   except ValueError:
+        return None, None, None
+    except ValueError:
         print("\nError: Invalid class width entered.")
-        return None, None
-   except Exception as e:
+        return None, None, None
+    except Exception as e:
         print(f"\nAn unexpected error occurred: {e}")
-        return None, None
+        return None, None, None
 
 #Compute mean, median, mode, modal class, variance, Standard Deviation using statistics
-def compute_statistics(data, grouped_df,)
-   if data is None or grouped_df is None:
+def compute_statistics(data, grouped_df):
+    if data is None or grouped_df is None:
         return
 
     # Calculating central tendency and dispersion
-   results = {
+    results = {
         "Mean": statistics.mean(data),
         "Median": statistics.median(data),
         "Variance": statistics.variance(data) if len(data) > 1 else 0,
         "Standard Deviation": statistics.stdev(data) if len(data) > 1 else 0
     }
-# Handling the Mode
-try:
- mode_val = statistics.mode(data)
-except statistics.StatisticsError:
- mode_val = "Multiple modes found"
+    # Handling the Mode
+    try:
+        mode_val = statistics.mode(data)
+    except statistics.StatisticsError:
+        mode_val = "Multiple modes found"
 
-# Finding the Modal Class from the frequency table
- modal_class = grouped_df.loc[grouped_df['Frequency'].idxmax(), 'Class Range']
+    # Finding the Modal Class from the frequency table
+    modal_class = grouped_df.loc[grouped_df['Frequency'].idxmax(), 'Class Range']
 
-# Displaying results in a clear tabular format
-print("\n" + "="*40)
-print("      STATISTICAL ANALYSIS REPORT")
-print("="*40)
-for key, value in results.items():
-    print(f"{key:20}: {value:.2f}")
-   
+    # Displaying results in a clear tabular format
+    print("\n" + "="*40)
+    print("      STATISTICAL ANALYSIS REPORT")
+    print("="*40)
+    for key, value in results.items():
+        print(f"{key:20}: {value:.2f}")
+    
     print(f"{'Mode':20}: {mode_val}")
     print(f"{'Modal Class':20}: {modal_class}")
     print("-" * 40)
@@ -116,22 +124,24 @@ for key, value in results.items():
     print("\nFrequency table has been saved to 'frequency_results.csv'.")
 
 #Draw a histogram from grouped data using Matplotlib
-def draw_histogram(data):
-   if data is None:
+def draw_histogram(data, class_width):
+    if data is None:
         return
-    
+    custom_bins = np.arange(0, 100 + class_width, class_width)
     # Data Visualisation
-plt.figure(figsize=(10, 6))
-plt.hist(data, bins='auto', color='royalblue', edgecolor='black', alpha=0.8)
-plt.title("Histogram of Student Grade Distribution", fontsize=14)
-plt.xlabel("Grades", fontsize=12)
-plt.ylabel("Frequency (Number of Students)", fontsize=12)
-plt.grid(axis='y', linestyle='--', alpha=0.7)
-plt.show()
+    plt.figure(figsize=(12, 6))
+    plt.hist(data, bins=custom_bins, color='royalblue', edgecolor='black', alpha=0.8)
+    plt.xticks(custom_bins, rotation=0)
+    plt.title("Histogram of Student Grade Distribution", fontsize=14)
+    plt.xlabel("Grades", fontsize=12)
+    plt.ylabel("Frequency (Number of Students)", fontsize=12)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.show()
+
 #Main method to run the program
 def main():
-#upload the data
-  while True:
+    #upload the data
+    while True:
         menu = "\n***** Student Analytics Application *****\n"
         menu += "1. Input and Save Student Grades\n"
         menu += "2. View Statistics and Frequency Table\n"
@@ -144,15 +154,15 @@ def main():
         if choice == "1":
             get_user_data()
         elif choice == "2":
-            raw_data, freq_df = read_data()
+            raw_data, freq_df, width = read_data()
             if raw_data is not None:
                 compute_statistics(raw_data, freq_df)
         elif choice == "3":
-            raw_data, _ = read_data()
+            raw_data, freq_df, width = read_data()
             if raw_data is not None:
-                draw_histogram(raw_data)
+                draw_histogram(raw_data, width)
         elif choice == "4":
-            print("Exiting program. Have a nice day!")
+            print("Exiting programme. Have a nice day!")
             break
         else:
             print("Invalid selection. Please try again.")
