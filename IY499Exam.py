@@ -29,6 +29,14 @@ def get_user_data():
         except ValueError:
             # Error Recovery: Handles non-numeric inputs
             print("Invalid input! Please enter a numerical value (e.g., 75.5).")
+
+if grade_list:
+        # Saving data to a CSV file
+    df = pd.DataFrame(grade_list, columns=["Grades"])
+    df.to_csv("student_grades.csv", index=False)
+    print(f"Success: {len(grade_list)} records saved to 'student_grades.csv'.")
+else:
+    print("No data was entered. File not updated.")
         
 #Read numerical data from csv file using Pandas
 def read_data():
