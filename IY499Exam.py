@@ -19,6 +19,16 @@ def get_user_data():
         
         if user_input.lower() == 'q':
             break
+        try:
+            # Converting input to float (Continuous numerical data)
+            grade = float(user_input)
+            if 0 <= grade <= 100:
+                grade_list.append(grade)
+            else:
+                print("Error: Grade must be between 0 and 100.")
+        except ValueError:
+            # Error Recovery: Handles non-numeric inputs
+            print("Invalid input! Please enter a numerical value (e.g., 75.5).")
         
 #Read numerical data from csv file using Pandas
 def read_data():
