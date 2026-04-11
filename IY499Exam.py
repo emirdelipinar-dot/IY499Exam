@@ -89,6 +89,16 @@ def compute_statistics(data, grouped_df,)
         "Variance": statistics.variance(data) if len(data) > 1 else 0,
         "Standard Deviation": statistics.stdev(data) if len(data) > 1 else 0
     }
+# Handling the Mode
+try:
+ mode_val = statistics.mode(data)
+except statistics.StatisticsError:
+ mode_val = "Multiple modes found"
+
+# Finding the Modal Class from the frequency table
+ modal_class = grouped_df.loc[grouped_df['Frequency'].idxmax(), 'Class Range']
+
+
 #Draw a histogram from grouped data using Matplotlib
 def draw_histogram(grouped_df):
     print("**** Histogram ****")
