@@ -131,30 +131,34 @@ plt.show()
 #Main method to run the program
 def main():
 #upload the data
-   while True:
-    menu += "\n***** Grouped Data Application *****\n"
-    menu += "\n1. Add and save data"
-    menu += "\n2. Show Statistics"
-    menu += "\n3. Draw Histogram"
-    menu += "\n4.Exit"
-    print(menu)
-    choice = input("Enter your choice(1-6):")
+  while True:
+        menu = "\n***** Student Analytics Application *****\n"
+        menu += "1. Input and Save Student Grades\n"
+        menu += "2. View Statistics and Frequency Table\n"
+        menu += "3. Generate Histogram Visualisation\n"
+        menu += "4. Exit"
+        print(menu)
+        
+        choice = input("Select an option (1-4): ")
 
-    if choice == "1":
-        get_user_data()
-    elif choice =="2":
-        read_data()
-        compute_statistics("data","grouped_df","frequency","midpoint")
-    elif choice == "3":
-        draw_histogram("grouped_df")
-    elif choice == "4":
-        print("Good bye")
-        break
-    else:
-        print("Invalid option. Please Try again.")
+        if choice == "1":
+            get_user_data()
+        elif choice == "2":
+            raw_data, freq_df = read_data()
+            if raw_data is not None:
+                compute_statistics(raw_data, freq_df)
+        elif choice == "3":
+            raw_data, _ = read_data()
+            if raw_data is not None:
+                draw_histogram(raw_data)
+        elif choice == "4":
+            print("Exiting program. Have a nice day!")
+            break
+        else:
+            print("Invalid selection. Please try again.")
 
-    if __name__=="__main__":
-        main()
+if __name__ == "__main__":
+    main()
 
 
     
