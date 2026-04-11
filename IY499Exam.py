@@ -78,8 +78,17 @@ def read_data():
         return None, None
 
 #Compute mean, median, mode, modal class, variance, Standard Deviation using statistics
-def compute_statistics(data, grouped_df, frequency, midpoint):
-    print("Display all Statistics.")
+def compute_statistics(data, grouped_df,)
+   if data is None or grouped_df is None:
+        return
+
+    # Calculating central tendency and dispersion
+   results = {
+        "Mean": statistics.mean(data),
+        "Median": statistics.median(data),
+        "Variance": statistics.variance(data) if len(data) > 1 else 0,
+        "Standard Deviation": statistics.stdev(data) if len(data) > 1 else 0
+    }
 #Draw a histogram from grouped data using Matplotlib
 def draw_histogram(grouped_df):
     print("**** Histogram ****")
