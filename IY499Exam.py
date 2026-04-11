@@ -66,6 +66,17 @@ def read_data():
         freq_table['Midpoint'] = freq_table['Class Range'].apply(lambda x: x.mid)
         
         return raw_grades, freq_table
+   except FileNotFoundError:
+        # Error Recovery: Handles missing files without using 'os'
+        print("\nError: 'student_grades.csv' not found. Please add data first (Option 1).")
+        return None, None
+   except ValueError:
+        print("\nError: Invalid class width entered.")
+        return None, None
+   except Exception as e:
+        print(f"\nAn unexpected error occurred: {e}")
+        return None, None
+
 #Compute mean, median, mode, modal class, variance, Standard Deviation using statistics
 def compute_statistics(data, grouped_df, frequency, midpoint):
     print("Display all Statistics.")
