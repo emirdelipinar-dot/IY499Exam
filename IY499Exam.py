@@ -50,15 +50,17 @@ def read_data():
         raw_grades.sort()
         
         # User specifies class width for binning (Grouping)
-        width_input = input("Enter the class width for grouping data (e.g., 10): ")
-        class_width = float(width_input)
-       
-        if class_width < 4:
-            print("Width too small! Setting to minimum (4).")
-            class_width = 4
-        elif class_width > 100:
-            print("Width too large! Setting to maximum (100).")
-            class_width = 100
+        while True:
+            try:
+                width_input = input("Enter the class width for grouping data (4-100): ")
+                class_width = float(width_input)
+                
+                if 4 <= class_width <= 100:
+                    break 
+                else:
+                    print("Error: Width must be between 4 and 100. Please try again.")
+            except ValueError:
+                print("Invalid input! Please enter a numerical value.")
       
         # Creating Bins using NumPy
         bins = np.arange(0, 100 + class_width, class_width)
