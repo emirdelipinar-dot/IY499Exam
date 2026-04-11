@@ -52,7 +52,20 @@ def read_data():
         # User specifies class width for binning (Grouping)
         width_input = input("Enter the class width for grouping data (e.g., 10): ")
         class_width = float(width_input)
-
+# Creating Bins using NumPy
+        bins = np.arange(0, 100 + class_width, class_width)
+        
+        # Binning the data into categories
+        df['Class_Range'] = pd.cut(df['Grades'], bins=bins)
+        
+        # Creating a Frequency Distribution Table
+        freq_table = df['Class_Range'].value_counts().sort_index().reset_index()
+        freq_table.columns = ['Class Range', 'Frequency']
+        
+        # Calculating Midpoints for each class
+        freq_table['Midpoint'] = freq_table['Class Range'].apply(lambda x: x.mid)
+        
+        return raw_grades, freq_table
 #Compute mean, median, mode, modal class, variance, Standard Deviation using statistics
 def compute_statistics(data, grouped_df, frequency, midpoint):
     print("Display all Statistics.")
