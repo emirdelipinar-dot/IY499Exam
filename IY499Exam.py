@@ -40,7 +40,19 @@ else:
         
 #Read numerical data from csv file using Pandas
 def read_data():
-    print("Data was loaded.")
+   try:
+        # File Access: Reading from the CSV
+        df = pd.read_csv("student_grades.csv")
+        raw_grades = df["Grades"].tolist()
+        
+        # Requirement: Application of a Sorting Algorithm
+        # We sort the data in ascending order before processing
+        raw_grades.sort()
+        
+        # User specifies class width for binning (Grouping)
+        width_input = input("Enter the class width for grouping data (e.g., 10): ")
+        class_width = float(width_input)
+
 #Compute mean, median, mode, modal class, variance, Standard Deviation using statistics
 def compute_statistics(data, grouped_df, frequency, midpoint):
     print("Display all Statistics.")
