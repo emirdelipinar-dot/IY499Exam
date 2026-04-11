@@ -116,8 +116,18 @@ for key, value in results.items():
     print("\nFrequency table has been saved to 'frequency_results.csv'.")
 
 #Draw a histogram from grouped data using Matplotlib
-def draw_histogram(grouped_df):
-    print("**** Histogram ****")
+def draw_histogram(data):
+   if data is None:
+        return
+    
+    # Data Visualisation
+plt.figure(figsize=(10, 6))
+plt.hist(data, bins='auto', color='royalblue', edgecolor='black', alpha=0.8)
+plt.title("Histogram of Student Grade Distribution", fontsize=14)
+plt.xlabel("Grades", fontsize=12)
+plt.ylabel("Frequency (Number of Students)", fontsize=12)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
 #Main method to run the program
 def main():
 #upload the data
