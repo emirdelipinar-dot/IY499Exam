@@ -104,6 +104,16 @@ print("      STATISTICAL ANALYSIS REPORT")
 print("="*40)
 for key, value in results.items():
     print(f"{key:20}: {value:.2f}")
+   
+    print(f"{'Mode':20}: {mode_val}")
+    print(f"{'Modal Class':20}: {modal_class}")
+    print("-" * 40)
+    print("\n--- Frequency Distribution Table ---")
+    print(grouped_df)
+    
+    # Saving analysis results to a new CSV file
+    grouped_df.to_csv("frequency_results.csv", index=False)
+    print("\nFrequency table has been saved to 'frequency_results.csv'.")
 
 #Draw a histogram from grouped data using Matplotlib
 def draw_histogram(grouped_df):
