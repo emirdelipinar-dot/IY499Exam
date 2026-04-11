@@ -98,6 +98,12 @@ except statistics.StatisticsError:
 # Finding the Modal Class from the frequency table
  modal_class = grouped_df.loc[grouped_df['Frequency'].idxmax(), 'Class Range']
 
+# Displaying results in a clear tabular format
+print("\n" + "="*40)
+print("      STATISTICAL ANALYSIS REPORT")
+print("="*40)
+for key, value in results.items():
+    print(f"{key:20}: {value:.2f}")
 
 #Draw a histogram from grouped data using Matplotlib
 def draw_histogram(grouped_df):
