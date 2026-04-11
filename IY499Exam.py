@@ -11,7 +11,15 @@ import statistics
 
 #Get data and save into csv file using Pandas
 def get_user_data():
-    print("Data saved")
+    print("\n--- Student Grade Entry System ---")
+    grade_list = []
+    
+    while True:
+        user_input = input("Enter a student grade (0-100) or 'q' to save and finish: ")
+        
+        if user_input.lower() == 'q':
+            break
+        
 #Read numerical data from csv file using Pandas
 def read_data():
     print("Data was loaded.")
